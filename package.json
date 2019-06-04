@@ -22,7 +22,7 @@
     "vcs"
   ],
   "license": "MIT",
-  "repository": "git://github.com/steveukx/git-js.git",
+  "repository": "git://github.com/steveukx/ximhear.git",
   "main": "./src/index.js",
   "files": [
     "promise.*",
