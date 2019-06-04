@@ -6,6 +6,7 @@
    var deferred = require('./util/deferred');
    var exists = require('./util/exists');
    var NOOP = function () {};
+   var ListLogSummary = require('./responses/ListLogSummary');
 
    /**
     * Git handling for node. All public functions can be chained and all `then` handlers are optional.
@@ -1589,6 +1590,9 @@
     * @param {string} type
     */
    function requireResponseHandler (type) {
+      if (type === 'ListLogSummary') {
+         return ListLogSummary;
+      }
       return require(__dirname + '/responses/' + type);
    }
 
