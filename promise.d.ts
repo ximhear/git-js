@@ -330,7 +330,7 @@ declare namespace simplegit {
        * with the name of the command being run and the stdout & stderr streams used by the ChildProcess.
        *
        * @example
-       * require('simple-git')
+       * require('simple-git-for-electron')
        *    .outputHandler(function (command, stdout, stderr) {
        *       stdout.pipe(process.stdout);
        *    })

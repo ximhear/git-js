@@ -4,7 +4,7 @@ const FS = require('fs');
 
 /*
    The broken chains test assures the behaviour of both standard and Promise wrapped versions
-   of the simple-git library.
+   of the simple-git-for-electron library.
 
    Failures (exit code other than zero and some content in the stderr output) cause the current
    queue to be truncated and no additional steps to be taken.

@@ -5,7 +5,7 @@ A light weight interface for running git commands in any [node.js](http://nodejs
 
 # Installation
 
-Easiest through [npm](http://npmjs.org): `npm install simple-git`
+Easiest through [npm](http://npmjs.org): `npm install simple-git-for-electron`
 
 # Dependencies
 
@@ -16,7 +16,7 @@ Requires [git](http://git-scm.com/downloads) to be installed and that it can be 
 Include into your app using:
 
 ```js
-const simpleGit = require('simple-git')(workingDirPath);
+const simpleGit = require('simple-git-for-electron')(workingDirPath);
 ```
 
 > where the `workingDirPath` is optional, defaulting to the current directory.
@@ -119,7 +119,7 @@ Use of these APIs is deprecated and should be avoided as support for them will b
 `.then(func)` In versions 1.72 and below, it was possible to add a regular function call to the queue of tasks to be
  run. As this name clashes with the use of Promises, in version 1.73.0 it is renamed to `.exec(fn)` and a warning will
  be logged to `stdout` if `.then` is used. From version 2.0 the library will support promises without the need to wrap
- or use the alternative require `require('simple-git/promise')`.
+ or use the alternative require `require('simple-git-for-electron/promise')`.
 
 `.log([from, to], handlerFn)` list commits between `from` and `to` tags or branch, switch to supplying the revisions
 as an options object instead.
@@ -130,7 +130,7 @@ When no suitable wrapper exists in the interface for creating a request, it is p
 using `git.raw([...], handler)`. The array of commands are passed directly to the `git` binary:
 
 ```js
-const git = require('simple-git');
+const git = require('simple-git-for-electron');
 const path = '/path/to/repo';
 
 git(path).raw(
@@ -156,7 +156,7 @@ const USER = 'something';
 const PASS = 'somewhere';
 const REPO = 'github.com/username/private-repo';
 
-const git = require('simple-git/promise');
+const git = require('simple-git-for-electron/promise');
 const remote = `https://${USER}:${PASS}@${REPO}`;
 
 git().silent(true)
@@ -176,14 +176,14 @@ supports passing either an object of name=value pairs or setting a single variab
 ```js
 const GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no";
 
-const git = require('simple-git');
+const git = require('simple-git-for-electron');
 
 git()
   .env('GIT_SSH_COMMAND', GIT_SSH_COMMAND)
   .status((err, status) => { /*  */ })
 
 
-const gitP = require('simple-git/promise');
+const gitP = require('simple-git-for-electron/promise');
 
 gitP().env({ ...process.env, GIT_SSH_COMMAND })
   .status()
@@ -201,7 +201,7 @@ added.
 To import with TypeScript:
 
 ```
-import * as simplegit from 'simple-git/promise';
+import * as simplegit from 'simple-git-for-electron/promise';
 
 const git = simplegit();
 git.status().then((status: StatusSummary) => { ... })
@@ -223,16 +223,16 @@ There are a few potential reasons:
 
 - `git` isn't available as a binary for the user running the main `node` process, custom paths to the binary can be used
   with the `.customBinary(...)` api option.
-- the working directory passed in to the main `simple-git` function isn't accessible, check it is read/write accessible
+- the working directory passed in to the main `simple-git-for-electron` function isn't accessible, check it is read/write accessible
   by the user running the `node` process.
 
 # Examples
 
-### async await with simple-git/promise:
+### async await with simple-git-for-electron/promise:
 
 ```js
 async function status (workingDir) {
-   const git = require('simple-git/promise');
+   const git = require('simple-git-for-electron/promise');
    
    let statusSummary = null;
    try {
@@ -251,7 +251,7 @@ status(__dirname + '/some-repo').then(status => console.log(status));
 
 ### Initialise a git repo if necessary
 ```js
-const gitP = require('simple-git/promise');
+const gitP = require('simple-git-for-electron/promise');
 const git = gitP(__dirname);
 
 git.checkIsRepo()
@@ -266,12 +266,12 @@ function initialiseRepo (git) {
 
 ### Update repo and get a list of tags
 ```js
-require('simple-git')(__dirname + '/some-repo')
+require('simple-git-for-electron')(__dirname + '/some-repo')
      .pull()
      .tags((err, tags) => console.log("Latest available tag: %s", tags.latest));
 
 // update repo and when there are changes, restart the app
-require('simple-git')()
+require('simple-git-for-electron')()
      .pull((err, update) => {
         if(update && update.summary.changes) {
            require('child_process').exec('npm restart');
@@ -281,7 +281,7 @@ require('simple-git')()
 
 ### Starting a new repo
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
      .init()
      .add('./*')
      .commit("first commit!")
@@ -291,7 +291,7 @@ require('simple-git')()
 
 ### push with `-u`
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
      .add('./*')
      .commit("first commit!")
      .addRemote('origin', 'some-repo-url')
@@ -300,7 +300,7 @@ require('simple-git')()
 
 ### Piping to the console for long running tasks
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
      .outputHandler((command, stdout, stderr) => {
         stdout.pipe(process.stdout);
         stderr.pipe(process.stderr);
@@ -310,7 +310,7 @@ require('simple-git')()
 
 ### Update repo and print messages when there are changes, restart the app
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
      .exec(() => console.log('Starting pull...'))
      .pull((err, update) => {
         if(update && update.summary.changes) {
@@ -322,14 +322,14 @@ require('simple-git')()
 
 ### Get a full commits list, and then only between 0.11.0 and 0.12.0 tags
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
     .log((err, log) => console.log(log))
     .log('0.11.0', '0.12.0', (err, log) => console.log(log));
 ```
 
 ### Set the local configuration for author, then author for an individual commit
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
     .addConfig('user.name', 'Some One')
     .addConfig('user.email', 'some@one.com')
     .commit('committed as "Some One"', 'file-one')
@@ -338,7 +338,7 @@ require('simple-git')()
 
 ### Get remote repositories
 ```js
-require('simple-git')()
+require('simple-git-for-electron')()
     .listRemote(['--get-url'], (err, data) => {
         if (!err) {
             console.log('Remote url for repository at ' + __dirname + ':');
